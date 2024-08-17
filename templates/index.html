@@ -1,0 +1,40 @@
+{% extends "base.html" %} 
+{%block head%} {{ super() }}
+<style>
+  .fancy-paragraph {
+      font-family: 'Arial', sans-serif; /* Change the font-family as needed */
+      font-size: 18px; /* Adjust the font size */
+      color: #333; /* Dark grey color for text */
+      background-color: #f9f9f9; /* Light grey background */
+      padding: 15px; /* Add padding around the text */
+      margin: 20px 0; /* Space above and below the paragraph */
+      border-left: 5px solid #007bff; /* Blue left border */
+      border-radius: 5px; /* Rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      line-height: 1.6; /* Increase line height for better readability */
+  }
+
+  .fancy-paragraph strong {
+      color: #007bff; /* Highlight important text in blue */
+  }
+</style>
+{%endblock%}
+
+{% block title %}
+PulsePoint Cardiology Hospital
+{%endblock%}
+{% block content %} 
+<h1> PULSEPOINT CARDIOLOGY HOSPITAL</h1>
+<center>
+    <img
+      src="{{ url_for('static', filename='hospital.png') }}"
+      alt="hospital_logo"
+      height="250px"
+    />
+  </center>
+  <p class="fancy-paragraph">
+    
+<strong>PULSEPOINT CARDIOLOGY HOSPITAL</strong> is a premier healthcare institution dedicated exclusively to the diagnosis, treatment, and management of cardiovascular diseases. Established with the mission to provide world-class cardiac care, PulsePoint combines cutting-edge technology with a team of renowned cardiologists and heart surgeons, ensuring that every patient receives the highest standard of care. The hospital offers a comprehensive range of services, including advanced diagnostics, minimally invasive procedures, and complex heart surgeries. With state-of-the-art facilities, including specialized cardiac ICUs and cath labs, PulsePoint is at the forefront of heart health. The hospital is committed to patient-centered care, with a focus on prevention, early detection, and rehabilitation, ensuring that each patient’s journey to recovery is supported with compassion and expertise. PulsePoint Cardiology Hospital stands as a beacon of hope for those battling heart disease, offering innovative treatments and personalized care plans tailored to meet the unique needs of every individual
+</p>
+
+{% endblock %}
