@@ -1,0 +1,55 @@
+<html>
+<div>
+  <table class="table table-hover" style="width: 1000px;">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Age</th>
+        <th scope="col">Sex</th>
+        <th scope="col">CP</th>
+        <th scope="col">Resting BP</th>
+        <th scope="col">Cholesterol</th>
+        <th scope="col">FBS</th>
+        <th scope="col">Resting ECG</th>
+        <th scope="col">Max Heart Rate</th>
+        <th scope="col">Exercise Angina</th>
+        <th scope="col">Old Peak</th>
+        <th scope="col">Slope</th>
+        <th scope="col">CA</th>
+        <th scope="col">Thal</th>
+        <th scope="col">Target</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for patient in patients %}
+      <tr>
+        <td>{{ patient.name }}</td>
+        <td>{{ patient.age }}</td>
+        <td>{{ patient.sex }}</td>
+        <td>{{ patient.cp }}</td>
+        <td>{{ patient.trestbps }}</td>
+        <td>{{ patient.chol }}</td>
+        <td>{{ patient.fbs }}</td>
+        <td>{{ patient.restecg }}</td>
+        <td>{{ patient.thalach }}</td>
+        <td>{{ patient.exang }}</td>
+        <td>{{ patient.oldpeak }}</td>
+        <td>{{ patient.slope }}</td>
+        <td>{{ patient.ca }}</td>
+        <td>{{ patient.thal }}</td>
+        <td>{{ patient.target }}</td>
+        <td>
+          <a href="#" class="btn btn-outline-primary" role="button">
+            Edit
+          </a>
+          <a href="#" class="btn btn-outline-danger" role="button">
+            Delete
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</html>
