@@ -23,7 +23,7 @@ def login_post():
         return redirect(url_for('auth.signup'))  # Redirect back to login if authentication fails
 
     login_user(user)
-    return redirect(url_for('main.profile'))
+    return redirect(url_for('main.user_patients'))
 
 
 @auth.route('/signup')

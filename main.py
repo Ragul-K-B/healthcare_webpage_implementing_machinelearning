@@ -4,8 +4,15 @@ from flask_login import login_required, current_user
 
 from .models import Patient,db
 from .models import User
+import torch
+import numpy as np
+from .model import Model
 
 main = Blueprint('main', __name__)
+input_dim = 13
+model = Model(input_dim)
+model.load_state_dict(torch.load('model.pth'))
+model.eval()  # Set model to evaluation mode
 
 @main.route('/')
 def index():
@@ -36,8 +43,12 @@ def new_patient_post():
     slope = request.form['slope']
     ca = request.form['ca']
     thal = request.form['thal']
-    target = request.form['target']
 
+    features = [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
+    features_tensor = torch.tensor([features], dtype=torch.float32)
+    with torch.no_grad():  # No need to compute gradients
+        outputs = model(features_tensor)
+        target = outputs.item()
     new_entry = Patient(
         name=name,
         age=age,
