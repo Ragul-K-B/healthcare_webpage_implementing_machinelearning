@@ -111,12 +111,13 @@ def delete_patient(patient_id):
     db.session.delete(patient)
     db.session.commit()
     return redirect(url_for('main.user_patients'))
-
 @main.route("/patient/<int:patient_id>/patient", methods=['GET', 'POST'])
 @login_required
 def edit_patient(patient_id):
-    patient= Patient.query.get_or_404(patient_id)
+    patient = Patient.query.get_or_404(patient_id)
+
     if request.method == 'POST':
+        # Collect the updated form data
         features = [
             float(request.form['age']),
             float(request.form['sex']),
@@ -132,32 +133,51 @@ def edit_patient(patient_id):
             float(request.form['ca']),
             float(request.form['thal'])
         ]
+
+        # Log the collected form data for debugging
+        print("Form data collected:", features)
+
+        # Convert the features into a tensor for model prediction
         features_tensor = torch.tensor([features], dtype=torch.float32)
 
-        # Make prediction
-        with torch.no_grad():  # No need to compute gradients
+        # Log the tensor data for debugging
+        print("Features tensor created:", features_tensor)
+
+        # Make prediction using the preloaded model
+        with torch.no_grad():
             outputs = model(features_tensor)
             target = outputs.item()
 
-        if request.method == 'POST':
-            # Update the patient's attributes
-            patient.name = request.form['name']
-            patient.age = request.form['age']
-            patient.sex = request.form['sex']
-            patient.cp = request.form['cp']
-            patient.trestbps = request.form['trestbps']
-            patient.chol = request.form['chol']
-            patient.fbs = request.form['fbs']
-            patient.restecg = request.form['restecg']
-            patient.thalach = request.form['thalach']
-            patient.exang = request.form['exang']
-            patient.oldpeak = request.form['oldpeak']
-            patient.slope = request.form['slope']
-            patient.ca = request.form['ca']
-            patient.thal = request.form['thal']
-            patient.target=target
-            db.session.commit()
+        # Log the prediction for debugging
+        print("Predicted target:", target)
 
+        # Update patient data in the database
+        patient.name = request.form['name']
+        patient.age = request.form['age']
+        patient.sex = request.form['sex']
+        patient.cp = request.form['cp']
+        patient.trestbps = request.form['trestbps']
+        patient.chol = request.form['chol']
+        patient.fbs = request.form['fbs']
+        patient.restecg = request.form['restecg']
+        patient.thalach = request.form['thalach']
+        patient.exang = request.form['exang']
+        patient.oldpeak = request.form['oldpeak']
+        patient.slope = request.form['slope']
+        patient.ca = request.form['ca']
+        patient.thal = request.form['thal']
+        patient.target = target  # Update the target value with the new prediction
 
+        # Log the updated patient data for debugging
+        print("Updated patient data:", patient)
+
+        # Commit to database
+        db.session.commit()
+
+        # Log confirmation of commit
+        print("Database updated successfully")
+
+        flash('Patient information updated successfully!')
         return redirect(url_for('main.user_patients'))
+
     return render_template('edit_patient.html', patient=patient)
