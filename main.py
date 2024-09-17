@@ -155,6 +155,7 @@ def edit_patient(patient_id):
             patient.slope = request.form['slope']
             patient.ca = request.form['ca']
             patient.thal = request.form['thal']
+            patient.target=target
             db.session.commit()
 
 
