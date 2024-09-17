@@ -103,4 +103,60 @@ def user_patients():
     patients = user.patients
 
     # Render the template with the patient's data
-    return render_template('all_patients.html', patients=patients, user=user)
+    return render_template('all_patients.html', patients=patients,user=user)
+@main.route('/patient/<int:patient_id>/delete', methods=['GET'])
+@login_required
+def delete_patient(patient_id):
+    patient = Patient.query.get_or_404(patient_id)
+    db.session.delete(patient)
+    db.session.commit()
+    return redirect(url_for('main.user_patients'))
+
+@main.route("/patient/<int:patient_id>/patient", methods=['GET', 'POST'])
+@login_required
+def edit_patient(patient_id):
+    patient= Patient.query.get_or_404(patient_id)
+    if request.method == 'POST':
+        features = [
+            float(request.form['age']),
+            float(request.form['sex']),
+            float(request.form['cp']),
+            float(request.form['trestbps']),
+            float(request.form['chol']),
+            float(request.form['fbs']),
+            float(request.form['restecg']),
+            float(request.form['thalach']),
+            float(request.form['exang']),
+            float(request.form['oldpeak']),
+            float(request.form['slope']),
+            float(request.form['ca']),
+            float(request.form['thal'])
+        ]
+        features_tensor = torch.tensor([features], dtype=torch.float32)
+
+        # Make prediction
+        with torch.no_grad():  # No need to compute gradients
+            outputs = model(features_tensor)
+            target = outputs.item()
+
+        if request.method == 'POST':
+            # Update the patient's attributes
+            patient.name = request.form['name']
+            patient.age = request.form['age']
+            patient.sex = request.form['sex']
+            patient.cp = request.form['cp']
+            patient.trestbps = request.form['trestbps']
+            patient.chol = request.form['chol']
+            patient.fbs = request.form['fbs']
+            patient.restecg = request.form['restecg']
+            patient.thalach = request.form['thalach']
+            patient.exang = request.form['exang']
+            patient.oldpeak = request.form['oldpeak']
+            patient.slope = request.form['slope']
+            patient.ca = request.form['ca']
+            patient.thal = request.form['thal']
+            db.session.commit()
+
+
+        return redirect(url_for('main.user_patients'))
+    return render_template('edit_patient.html', patient=patient)
